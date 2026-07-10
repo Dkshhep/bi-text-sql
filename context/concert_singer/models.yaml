@@ -1,0 +1,30 @@
+db_id: concert_singer
+models:
+  - table: singer
+    description: 歌手主表，记录歌手姓名、国家、年龄等基础信息。
+    columns:
+      - name: Singer_ID
+        alias: 歌手ID
+        description: 歌手唯一标识。
+      - name: Name
+        alias: 姓名
+        description: 歌手姓名。
+      - name: Country
+        alias: 国家
+        description: 歌手所属国家或地区。
+  - table: concert
+    description: 演唱会主表，记录演唱会名称、主题、场馆和年份。
+    columns:
+      - name: Concert_ID
+        alias: 演唱会ID
+        description: 演唱会唯一标识。
+      - name: Year
+        alias: 年份
+        description: 演唱会举办年份。
+  - table: singer_in_concert
+    description: 歌手与演唱会的关联表，用于分析歌手参加过哪些演唱会。
+    columns:
+      - name: Singer_ID
+        alias: 歌手ID
+      - name: Concert_ID
+        alias: 演唱会ID

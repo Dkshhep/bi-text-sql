@@ -1,0 +1,21 @@
+db_id: academic
+relationships:
+  - {name: author__organization, models: [author, organization], join_type: MANY_TO_ONE, condition: author.oid = organization.oid, approved: true}
+  - {name: domain_author__author, models: [domain_author, author], join_type: MANY_TO_ONE, condition: domain_author.aid = author.aid, approved: true}
+  - {name: domain_author__domain, models: [domain_author, domain], join_type: MANY_TO_ONE, condition: domain_author.did = domain.did, approved: true}
+  - {name: domain_conference__conference, models: [domain_conference, conference], join_type: MANY_TO_ONE, condition: domain_conference.cid = conference.cid, approved: true}
+  - {name: domain_conference__domain, models: [domain_conference, domain], join_type: MANY_TO_ONE, condition: domain_conference.did = domain.did, approved: true}
+  - {name: domain_journal__domain, models: [domain_journal, domain], join_type: MANY_TO_ONE, condition: domain_journal.did = domain.did, approved: true}
+  - {name: domain_journal__journal, models: [domain_journal, journal], join_type: MANY_TO_ONE, condition: domain_journal.jid = journal.jid, approved: true}
+  - {name: domain_keyword__domain, models: [domain_keyword, domain], join_type: MANY_TO_ONE, condition: domain_keyword.did = domain.did, approved: true}
+  - {name: domain_keyword__keyword, models: [domain_keyword, keyword], join_type: MANY_TO_ONE, condition: domain_keyword.kid = keyword.kid, approved: true}
+  - {name: publication__conference, models: [publication, conference], join_type: MANY_TO_ONE, condition: publication.cid = conference.cid, approved: true}
+  - {name: publication__journal, models: [publication, journal], join_type: MANY_TO_ONE, condition: publication.jid = journal.jid, approved: true}
+  - {name: domain_publication__domain, models: [domain_publication, domain], join_type: MANY_TO_ONE, condition: domain_publication.did = domain.did, approved: true}
+  - {name: domain_publication__publication, models: [domain_publication, publication], join_type: MANY_TO_ONE, condition: domain_publication.pid = publication.pid, approved: true}
+  - {name: publication_keyword__publication, models: [publication_keyword, publication], join_type: MANY_TO_ONE, condition: publication_keyword.pid = publication.pid, approved: true}
+  - {name: publication_keyword__keyword, models: [publication_keyword, keyword], join_type: MANY_TO_ONE, condition: publication_keyword.kid = keyword.kid, approved: true}
+  - {name: writes__author, models: [writes, author], join_type: MANY_TO_ONE, condition: writes.aid = author.aid, approved: true}
+  - {name: writes__publication, models: [writes, publication], join_type: MANY_TO_ONE, condition: writes.pid = publication.pid, approved: true}
+  - {name: cite__cited_publication, models: [cite, publication], join_type: MANY_TO_ONE, condition: cite.cited = publication.pid, approved: true}
+  - {name: cite__citing_publication, models: [cite, publication], join_type: MANY_TO_ONE, condition: cite.citing = publication.pid, approved: true}

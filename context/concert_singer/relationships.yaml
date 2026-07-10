@@ -1,0 +1,12 @@
+db_id: concert_singer
+relationships:
+  - name: singer_in_concert__singer
+    models: [singer_in_concert, singer]
+    join_type: MANY_TO_ONE
+    condition: singer_in_concert.Singer_ID = singer.Singer_ID
+    approved: true
+  - name: singer_in_concert__concert
+    models: [singer_in_concert, concert]
+    join_type: MANY_TO_ONE
+    condition: singer_in_concert.Concert_ID = concert.Concert_ID
+    approved: true

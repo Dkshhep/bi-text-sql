@@ -1,0 +1,16 @@
+db_id: concert_singer
+metrics:
+  - name: singer_count
+    alias: 歌手数量
+    description: 当前库中歌手主表记录的歌手总数。
+    expression: COUNT(DISTINCT singer.Singer_ID)
+    base_model: singer
+    dimensions:
+      - singer.Country
+      - singer.Age
+  - name: concert_count
+    alias: 演唱会数量
+    description: 当前库中演唱会主表记录的演唱会总数。
+    expression: COUNT(DISTINCT concert.Concert_ID)
+    base_model: concert
+    time_column: concert.Year

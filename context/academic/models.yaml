@@ -1,0 +1,89 @@
+db_id: academic
+models:
+  - table: author
+    description: 学术作者主数据；作者可隶属一个组织，并可通过 writes 与多篇论文关联。
+    columns:
+      - {name: aid, alias: 作者ID, description: 作者的唯一标识（主键）。}
+      - {name: name, alias: 作者姓名, description: 作者显示姓名；同名不保证可作为唯一标识。}
+      - {name: homepage, alias: 作者主页, description: 作者个人主页地址。}
+      - {name: oid, alias: 组织ID, description: 作者所属组织的标识，关联 organization.oid。}
+  - table: conference
+    description: 学术会议主数据；publication.cid 指向论文发表的会议。
+    columns:
+      - {name: cid, alias: 会议ID, description: 会议的唯一标识（主键）。}
+      - {name: name, alias: 会议名称, description: 会议名称。}
+      - {name: homepage, alias: 会议主页, description: 会议主页地址。}
+  - table: domain
+    description: 研究领域主数据，用于标注作者、会议、期刊、关键词和论文所属的研究领域。
+    columns:
+      - {name: did, alias: 领域ID, description: 研究领域的唯一标识（主键）。}
+      - {name: name, alias: 领域名称, description: 研究领域名称。}
+  - table: domain_author
+    description: 作者与研究领域的多对多关联表。
+    columns:
+      - {name: aid, alias: 作者ID, description: 关联的作者，关联 author.aid。}
+      - {name: did, alias: 领域ID, description: 关联的研究领域，关联 domain.did。}
+  - table: domain_conference
+    description: 会议与研究领域的多对多关联表。
+    columns:
+      - {name: cid, alias: 会议ID, description: 关联的会议，关联 conference.cid。}
+      - {name: did, alias: 领域ID, description: 关联的研究领域，关联 domain.did。}
+  - table: journal
+    description: 学术期刊主数据；publication.jid 指向论文发表的期刊。
+    columns:
+      - {name: jid, alias: 期刊ID, description: 期刊的唯一标识（主键）。}
+      - {name: name, alias: 期刊名称, description: 期刊名称。}
+      - {name: homepage, alias: 期刊主页, description: 期刊主页地址。}
+  - table: domain_journal
+    description: 期刊与研究领域的多对多关联表。
+    columns:
+      - {name: did, alias: 领域ID, description: 关联的研究领域，关联 domain.did。}
+      - {name: jid, alias: 期刊ID, description: 关联的期刊，关联 journal.jid。}
+  - table: keyword
+    description: 论文主题关键词主数据。
+    columns:
+      - {name: kid, alias: 关键词ID, description: 关键词的唯一标识（主键）。}
+      - {name: keyword, alias: 关键词, description: 关键词文本。}
+  - table: domain_keyword
+    description: 研究领域与关键词的多对多关联表。
+    columns:
+      - {name: did, alias: 领域ID, description: 关联的研究领域，关联 domain.did。}
+      - {name: kid, alias: 关键词ID, description: 关联的关键词，关联 keyword.kid。}
+  - table: publication
+    description: 学术论文主数据；一篇论文至多记录一个会议和一个期刊，但二者字段均可能为空。
+    columns:
+      - {name: pid, alias: 论文ID, description: 论文的唯一标识（主键）。}
+      - {name: title, alias: 论文标题, description: 论文标题；统计论文数量时不应用标题代替主键去重。}
+      - {name: abstract, alias: 摘要, description: 论文摘要文本。}
+      - {name: year, alias: 发表年份, description: 论文的发行或发表年份。}
+      - {name: citation_num, alias: 引用数, description: 该论文的被引用次数数值。}
+      - {name: reference_num, alias: 参考文献数, description: 该论文的参考文献数量。}
+      - {name: cid, alias: 会议ID, description: 论文发表会议的标识，关联 conference.cid。}
+      - {name: jid, alias: 期刊ID, description: 论文发表期刊的标识，关联 journal.jid。}
+  - table: domain_publication
+    description: 研究领域与论文的多对多关联表。
+    columns:
+      - {name: did, alias: 领域ID, description: 关联的研究领域，关联 domain.did。}
+      - {name: pid, alias: 论文ID, description: 关联的论文，关联 publication.pid。}
+  - table: organization
+    description: 作者所属机构主数据。
+    columns:
+      - {name: oid, alias: 组织ID, description: 组织的唯一标识（主键）。}
+      - {name: name, alias: 组织名称, description: 机构或组织名称。}
+      - {name: continent, alias: 所在区域, description: 组织所在区域；源数据示例取值包括“中国北方”。}
+      - {name: homepage, alias: 组织主页, description: 组织主页地址。}
+  - table: publication_keyword
+    description: 论文与关键词的多对多关联表。
+    columns:
+      - {name: pid, alias: 论文ID, description: 关联的论文，关联 publication.pid。}
+      - {name: kid, alias: 关键词ID, description: 关联的关键词，关联 keyword.kid。}
+  - table: writes
+    description: 作者署名关系表；一行表示一位作者参与一篇论文。
+    columns:
+      - {name: aid, alias: 作者ID, description: 署名作者，关联 author.aid。}
+      - {name: pid, alias: 论文ID, description: 作者参与的论文，关联 publication.pid。}
+  - table: cite
+    description: 论文引用边表；一行表示 citing 论文引用了 cited 论文。
+    columns:
+      - {name: citing, alias: 引用方论文ID, description: 发出引用的论文，关联 publication.pid。}
+      - {name: cited, alias: 被引论文ID, description: 被引用的论文，关联 publication.pid。}

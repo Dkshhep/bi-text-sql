@@ -1,0 +1,43 @@
+db_id: academic
+metrics:
+  - name: publication_count
+    alias: 论文数量
+    description: 满足筛选条件的论文总数；使用论文主键去重，避免作者、关键词或领域关联产生重复计数。
+    expression: COUNT(DISTINCT publication.pid)
+    base_model: publication
+    dimensions: [publication.year, publication.cid, publication.jid]
+  - name: author_count
+    alias: 作者数量
+    description: 满足筛选条件的作者总数；跨 writes 等关系表分析时按作者主键去重。
+    expression: COUNT(DISTINCT author.aid)
+    base_model: author
+    dimensions: [author.oid]
+  - name: organization_count
+    alias: 机构数量
+    description: 满足筛选条件的机构总数；按组织主键去重。
+    expression: COUNT(DISTINCT organization.oid)
+    base_model: organization
+    dimensions: [organization.continent]
+  - name: keyword_count
+    alias: 关键词数量
+    description: 满足筛选条件的关键词总数；跨论文或领域关联时按关键词主键去重。
+    expression: COUNT(DISTINCT keyword.kid)
+    base_model: keyword
+  - name: total_citations
+    alias: 论文总引用数
+    description: 满足筛选条件的论文 citation_num 之和；关联到一对多关系前须先确保每篇论文只保留一行。
+    expression: SUM(publication.citation_num)
+    base_model: publication
+    dimensions: [publication.year, publication.cid, publication.jid]
+  - name: average_citations_per_publication
+    alias: 篇均引用数
+    description: 满足筛选条件的论文平均 citation_num。
+    expression: AVG(publication.citation_num)
+    base_model: publication
+    dimensions: [publication.year, publication.cid, publication.jid]
+  - name: total_references
+    alias: 参考文献总数
+    description: 满足筛选条件的论文 reference_num 之和。
+    expression: SUM(publication.reference_num)
+    base_model: publication
+    dimensions: [publication.year]
